@@ -86,7 +86,7 @@
         <div class="prod-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px;">
           <sc-for list="{{ featured }}" as="p" hint-placeholder-count="4">
             <div onClick="{{ p.onOpen }}" style="cursor:pointer;border:1px solid #e6e7ea;border-radius:14px;overflow:hidden;background:#fff;display:flex;flex-direction:column;transition:box-shadow .25s,transform .25s,border-color .25s;" style-hover="box-shadow:0 24px 50px -26px rgba(10,10,10,.55);transform:translateY(-5px);border-color:#0a0a0a;">
-              <div style="aspect-ratio:2/1;background:linear-gradient(160deg,#f7f8f9,#eceef1);border-bottom:1px solid #eceef1;display:flex;align-items:center;justify-content:center;overflow:hidden;"><div style="transition:transform .45s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.06);">{{ p.icon }}</div></div>
+              <div style="aspect-ratio:2/1;background:linear-gradient(160deg,#f7f8f9,#eceef1);border-bottom:1px solid #eceef1;display:flex;align-items:center;justify-content:center;overflow:hidden;"><div style="width:100%;height:100%;transition:transform .45s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.06);">{{ p.icon }}</div></div>
               <div style="padding:16px;display:flex;flex-direction:column;gap:8px;flex:1;">
                 <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:#9a9ea5;">{{ p.category }}</div>
                 <div style="font-size:16px;font-weight:600;line-height:1.15;">{{ p.name }}</div>
@@ -125,7 +125,7 @@
         <div class="prod-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px;">
           <sc-for list="{{ shopProducts }}" as="p" hint-placeholder-count="8">
             <div onClick="{{ p.onOpen }}" style="cursor:pointer;border:1px solid #e6e7ea;border-radius:14px;overflow:hidden;background:#fff;display:flex;flex-direction:column;transition:box-shadow .25s,transform .25s,border-color .25s;" style-hover="box-shadow:0 24px 50px -26px rgba(10,10,10,.55);transform:translateY(-5px);border-color:#0a0a0a;">
-              <div style="aspect-ratio:2/1;background:linear-gradient(160deg,#f7f8f9,#eceef1);border-bottom:1px solid #eceef1;display:flex;align-items:center;justify-content:center;overflow:hidden;"><div style="transition:transform .45s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.06);">{{ p.icon }}</div></div>
+              <div style="aspect-ratio:2/1;background:linear-gradient(160deg,#f7f8f9,#eceef1);border-bottom:1px solid #eceef1;display:flex;align-items:center;justify-content:center;overflow:hidden;"><div style="width:100%;height:100%;transition:transform .45s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.06);">{{ p.icon }}</div></div>
               <div style="padding:16px;display:flex;flex-direction:column;gap:8px;flex:1;">
                 <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:#9a9ea5;">{{ p.category }}</div>
                 <div style="font-size:16px;font-weight:600;line-height:1.15;">{{ p.name }}</div>
@@ -461,6 +461,31 @@ class Component extends DCLogic {
     return el('svg',{width:size,height:size,viewBox:'0 0 200 200',fill:'none'},kids);
   }
 
+  svgLabel(name, strength) {
+    const el=React.createElement, ink='#0a0a0a', k=[];
+    k.push(el('rect',{key:'bg',x:0,y:0,width:480,height:240,fill:'#fff'}));
+    k.push(el('rect',{key:'bd',x:10,y:10,width:460,height:220,rx:8,fill:'none',stroke:ink,strokeWidth:2}));
+    const cx=74, cy=120;
+    k.push(el('circle',{key:'o',cx,cy,r:42,fill:'none',stroke:ink,strokeWidth:1}));
+    k.push(el('circle',{key:'o2',cx,cy,r:39,fill:'none',stroke:ink,strokeWidth:1}));
+    for(let i=0;i<40;i++){const a=i*2*Math.PI/40,long=i%5===0,r1=27,r2=long?37:33;k.push(el('line',{key:'l'+i,x1:cx+r1*Math.cos(a),y1:cy+r1*Math.sin(a),x2:cx+r2*Math.cos(a),y2:cy+r2*Math.sin(a),stroke:ink,strokeWidth:long?1.4:0.7}));}
+    k.push(el('circle',{key:'mc',cx,cy,r:24,fill:'none',stroke:ink,strokeWidth:1}));
+    [[19,0],[16,30],[12,15]].forEach((hx,hi)=>{const p=[];for(let i=0;i<6;i++){const a=hx[1]*Math.PI/180+i*Math.PI/3;p.push((cx+hx[0]*Math.cos(a))+','+(cy+hx[0]*Math.sin(a)));}k.push(el('polygon',{key:'h'+hi,points:p.join(' '),fill:'none',stroke:ink,strokeWidth:1}));});
+    k.push(el('circle',{key:'dot',cx,cy,r:2.4,fill:ink}));
+    k.push(el('line',{key:'dv',x1:132,y1:44,x2:132,y2:196,stroke:ink,strokeWidth:1.4}));
+    k.push(el('text',{key:'wm',x:150,y:86,fontFamily:'Regarn, sans-serif',fontSize:38,fill:ink,letterSpacing:2},'AuraGen'));
+    const up=(name||'').toUpperCase();
+    let lines=[up], fs=22;
+    if(up.length>26){fs=13;} else if(up.length>14){fs=16;}
+    if(up.length>14){const words=up.split(' ');if(words.length>1){let best=1,diff=1e9;for(let i=1;i<words.length;i++){const l=words.slice(0,i).join(' ').length,r=words.slice(i).join(' ').length;if(Math.abs(l-r)<diff){diff=Math.abs(l-r);best=i;}}lines=[words.slice(0,best).join(' '),words.slice(best).join(' ')];}}
+    const ny=lines.length>1?116:128;
+    lines.forEach((ln,i)=>k.push(el('text',{key:'nm'+i,x:150,y:ny+i*(fs+6),fontFamily:'"Space Grotesk",sans-serif',fontWeight:600,fontSize:fs,fill:ink,letterSpacing:2},ln)));
+    const bw=Math.max(70,String(strength).length*15+34), by=lines.length>1?170:174;
+    k.push(el('rect',{key:'db',x:150,y:by,width:bw,height:42,rx:6,fill:'none',stroke:ink,strokeWidth:2}));
+    k.push(el('text',{key:'dt',x:150+bw/2,y:by+29,textAnchor:'middle',fontFamily:'"IBM Plex Mono",monospace',fontWeight:500,fontSize:22,fill:ink},String(strength)));
+    return el('svg',{viewBox:'0 0 480 240',width:'100%',height:'100%',preserveAspectRatio:'xMidYMid meet',style:{display:'block'}},k);
+  }
+
   async placeOrder() {
     const { co, cart } = this.state;
     if (!cart.length) { this.setState({ co: {...co, error:'Your cart is empty.'} }); return; }
@@ -504,7 +529,7 @@ class Component extends DCLogic {
     const toCard = (p) => ({
       name:p.name, category:p.category, priceLabel:this.priceLabel(p),
       strengthCount: p.variants.length + (p.variants.length>1?' strengths':' strength'),
-      img:this.imgFor(p.slug, p.variants[0].strength), onOpen:()=>this.go('product', p.slug), icon:this.mark('#0a0a0a',120),
+      img:this.imgFor(p.slug, p.variants[0].strength), onOpen:()=>this.go('product', p.slug), icon:this.svgLabel(p.name,p.variants[0].strength),
     });
 
     // featured
@@ -533,7 +558,7 @@ class Component extends DCLogic {
         const qty = s.qty[p.slug] || 1;
         prod = {
           name:p.name, category:p.category, img:this.imgFor(p.slug, sel.strength),
-          selPrice:this.money(sel.price), description:this.description(p), qty, icon:this.mark('#0a0a0a',220),
+          selPrice:this.money(sel.price), description:this.description(p), qty, icon:this.svgLabel(p.name,sel.strength),
           lineTotal:this.money(sel.price*qty),
           incQty:()=>this.setState({qty:{...s.qty,[p.slug]:qty+1}}),
           decQty:()=>this.setState({qty:{...s.qty,[p.slug]:Math.max(1,qty-1)}}),
@@ -551,7 +576,7 @@ class Component extends DCLogic {
     const cartItems = s.cart.map(c=>{
       const p = this.bySlug(c.slug);
       return { name:c.name, strength:c.strength, price:this.money(c.price), qty:c.qty,
-        icon:this.mark('#0a0a0a',32), lineTotal:this.money(c.price*c.qty),
+        icon:this.svgLabel(c.name,c.strength), lineTotal:this.money(c.price*c.qty),
         onInc:()=>this.setQ(c.key,1), onDec:()=>this.setQ(c.key,-1), onRemove:()=>this.removeItem(c.key) };
     });
 
