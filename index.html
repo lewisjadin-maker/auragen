@@ -86,7 +86,7 @@
         <div class="prod-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px;">
           <sc-for list="{{ featured }}" as="p" hint-placeholder-count="4">
             <div onClick="{{ p.onOpen }}" style="cursor:pointer;border:1px solid #e6e7ea;border-radius:14px;overflow:hidden;background:#fff;display:flex;flex-direction:column;transition:box-shadow .25s,transform .25s,border-color .25s;" style-hover="box-shadow:0 24px 50px -26px rgba(10,10,10,.55);transform:translateY(-5px);border-color:#0a0a0a;">
-              <div style="aspect-ratio:2/1;background:linear-gradient(160deg,#f7f8f9,#eceef1);border-bottom:1px solid #eceef1;overflow:hidden;"><img src="{{ p.img }}" alt="{{ p.name }}" style="width:100%;height:100%;object-fit:contain;transition:transform .45s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05);"></div>
+              <div style="aspect-ratio:2/1;background:linear-gradient(160deg,#f7f8f9,#eceef1);border-bottom:1px solid #eceef1;display:flex;align-items:center;justify-content:center;overflow:hidden;"><div style="transition:transform .45s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.06);">{{ p.icon }}</div></div>
               <div style="padding:16px;display:flex;flex-direction:column;gap:8px;flex:1;">
                 <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:#9a9ea5;">{{ p.category }}</div>
                 <div style="font-size:16px;font-weight:600;line-height:1.15;">{{ p.name }}</div>
@@ -125,7 +125,7 @@
         <div class="prod-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px;">
           <sc-for list="{{ shopProducts }}" as="p" hint-placeholder-count="8">
             <div onClick="{{ p.onOpen }}" style="cursor:pointer;border:1px solid #e6e7ea;border-radius:14px;overflow:hidden;background:#fff;display:flex;flex-direction:column;transition:box-shadow .25s,transform .25s,border-color .25s;" style-hover="box-shadow:0 24px 50px -26px rgba(10,10,10,.55);transform:translateY(-5px);border-color:#0a0a0a;">
-              <div style="aspect-ratio:2/1;background:linear-gradient(160deg,#f7f8f9,#eceef1);border-bottom:1px solid #eceef1;overflow:hidden;"><img src="{{ p.img }}" alt="{{ p.name }}" style="width:100%;height:100%;object-fit:contain;transition:transform .45s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05);"></div>
+              <div style="aspect-ratio:2/1;background:linear-gradient(160deg,#f7f8f9,#eceef1);border-bottom:1px solid #eceef1;display:flex;align-items:center;justify-content:center;overflow:hidden;"><div style="transition:transform .45s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.06);">{{ p.icon }}</div></div>
               <div style="padding:16px;display:flex;flex-direction:column;gap:8px;flex:1;">
                 <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:#9a9ea5;">{{ p.category }}</div>
                 <div style="font-size:16px;font-weight:600;line-height:1.15;">{{ p.name }}</div>
@@ -148,7 +148,7 @@
       <section style="max-width:1080px;margin:0 auto;padding:36px 28px 80px;">
         <div onClick="{{ goShop }}" style="cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:1px;color:#6b6f76;margin-bottom:26px;">← BACK TO CATALOG</div>
         <div class="pdp-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:start;">
-          <div style="border:1px solid #e6e7ea;border-radius:14px;overflow:hidden;background:#f4f5f7;position:sticky;top:90px;"><div style="aspect-ratio:2/1;"><img src="{{ prod.img }}" alt="{{ prod.name }}" style="width:100%;height:100%;object-fit:contain;"></div></div>
+          <div style="border:1px solid #e6e7ea;border-radius:14px;overflow:hidden;background:#f4f5f7;position:sticky;top:90px;"><div style="aspect-ratio:2/1;display:flex;align-items:center;justify-content:center;">{{ prod.icon }}</div></div>
           <div>
             <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#9a9ea5;">{{ prod.category }}</div>
             <h1 style="font-size:38px;font-weight:600;letter-spacing:-.5px;margin:10px 0 0;">{{ prod.name }}</h1>
@@ -293,7 +293,7 @@
         <sc-if value="{{ hasCart }}" hint-placeholder-val="{{ false }}">
           <sc-for list="{{ cartItems }}" as="i" hint-placeholder-count="2">
             <div style="display:flex;gap:14px;padding:16px 0;border-bottom:1px solid #f1f2f4;">
-              <div style="width:84px;height:42px;flex:none;border:1px solid #eceef1;border-radius:6px;overflow:hidden;background:#f4f5f7;"><img src="{{ i.img }}" style="width:100%;height:100%;object-fit:contain;"></div>
+              <div style="width:84px;height:42px;flex:none;border:1px solid #eceef1;border-radius:6px;display:flex;align-items:center;justify-content:center;background:#f4f5f7;">{{ i.icon }}</div>
               <div style="flex:1;">
                 <div style="font-size:14px;font-weight:600;line-height:1.2;">{{ i.name }}</div>
                 <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#6b6f76;margin-top:3px;">{{ i.strength }} · {{ i.price }}</div>
@@ -504,7 +504,7 @@ class Component extends DCLogic {
     const toCard = (p) => ({
       name:p.name, category:p.category, priceLabel:this.priceLabel(p),
       strengthCount: p.variants.length + (p.variants.length>1?' strengths':' strength'),
-      img:this.imgFor(p.slug, p.variants[0].strength), onOpen:()=>this.go('product', p.slug),
+      img:this.imgFor(p.slug, p.variants[0].strength), onOpen:()=>this.go('product', p.slug), icon:this.mark('#0a0a0a',120),
     });
 
     // featured
@@ -533,7 +533,7 @@ class Component extends DCLogic {
         const qty = s.qty[p.slug] || 1;
         prod = {
           name:p.name, category:p.category, img:this.imgFor(p.slug, sel.strength),
-          selPrice:this.money(sel.price), description:this.description(p), qty,
+          selPrice:this.money(sel.price), description:this.description(p), qty, icon:this.mark('#0a0a0a',220),
           lineTotal:this.money(sel.price*qty),
           incQty:()=>this.setState({qty:{...s.qty,[p.slug]:qty+1}}),
           decQty:()=>this.setState({qty:{...s.qty,[p.slug]:Math.max(1,qty-1)}}),
@@ -551,7 +551,7 @@ class Component extends DCLogic {
     const cartItems = s.cart.map(c=>{
       const p = this.bySlug(c.slug);
       return { name:c.name, strength:c.strength, price:this.money(c.price), qty:c.qty,
-        img: p ? this.imgFor(c.slug, c.strength) : '', lineTotal:this.money(c.price*c.qty),
+        icon:this.mark('#0a0a0a',32), lineTotal:this.money(c.price*c.qty),
         onInc:()=>this.setQ(c.key,1), onDec:()=>this.setQ(c.key,-1), onRemove:()=>this.removeItem(c.key) };
     });
 
